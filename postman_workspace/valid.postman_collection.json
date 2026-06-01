@@ -1,0 +1,499 @@
+{
+  "info": {
+    "_postman_id": "a23a6e45-228b-40b1-b282-2ea0a9d53600",
+    "name": "valid",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "41588869"
+  },
+  "item": [
+    {
+      "name": "New Request",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.expect(pm.response.code).to.equal(201);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response message is valid\", function () {\r",
+              "    pm.expect(pm.response.text()).to.equal(\"User registered successfully.\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response message is valid\", function () {\r",
+              "    pm.expect(pm.response.text()).to.equal(\"Email already exists.\");\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n \"username\": \"johndoe1\",\r\n \"email\": \"john.doe123@examples.com\",\r\n \"password\": \"password123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/auth/register",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "auth",
+            "register"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "New Request",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const response = pm.response.json();\r",
+              "\r",
+              "// Check if the token exists\r",
+              "pm.test(\"Token is present\", function () {\r",
+              "    pm.expect(response.token).to.exist;\r",
+              "});\r",
+              "\r",
+              "// Check if the token is a string\r",
+              "pm.test(\"Token is a string\", function () {\r",
+              "    pm.expect(response.token).to.be.a('string');\r",
+              "});\r",
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "pm.test(\"Status code is 400\", function () {\r",
+              "    pm.response.to.have.status(401);\r",
+              "});\r",
+              "pm.test(\"Response message is valid\", function () {\r",
+              "    pm.expect(pm.response.text()).to.equal(\"Invalid email or password.\");\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n \"email\": \"john.doe@example.com\",\r\n \"password\": \"password123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/auth/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "New Request",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response schema is valid\", function () {\r",
+              "    const responseJson = pm.response.json();\r",
+              "    pm.response.to.have.jsonSchema({\r",
+              "        type: \"array\",\r",
+              "        items: {\r",
+              "            type: \"object\",\r",
+              "            properties: {\r",
+              "                id: { type: \"integer\" },\r",
+              "                name: { type: \"string\" },\r",
+              "                description: { type: \"string\" },\r",
+              "                date: { type: \"string\", format: \"date\" },\r",
+              "                createdAt: { type: \"string\", format: \"date-time\" },\r",
+              "                updatedAt: { type: \"string\", format: \"date-time\" },\r",
+              "                rsvped: { type: \"boolean\" }\r",
+              "            },\r",
+              "            required: ['id', 'name', 'description', 'date', 'createdAt', 'updatedAt', 'rsvped']\r",
+              "        }\r",
+              "    });\r",
+              "    pm.expect(responseJson).to.be.an('array'); // Assuming the response is an array\r",
+              "    responseJson.forEach(event => {\r",
+              "        pm.expect(event).to.have.all.keys('id', 'name', 'date', 'description', 'createdAt', 'updatedAt', 'rsvped'); // Adjust keys based on expected schema\r",
+              "    });\r",
+              "});\r",
+              "\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEzLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzgwMzUwMjQ4LCJleHAiOjE3ODAzNTM4NDh9.N3Z4FqYwrXCocwIKTUJpwfyH7864ZuaE3fDQ2URT8_o",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/events",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "events"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "New Request",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {\r",
+              "    pm.response.to.have.status(201);\r",
+              "});\r",
+              "pm.test(\"Status code is 403\", function () {\r",
+              "    pm.response.to.have.status(403);\r",
+              "});\r",
+              "pm.test(\"Response message is valid\", function () {\r",
+              "    pm.expect(pm.response.text()).to.equal(\"Invalid email or password.\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response schema is valid\", function () {\r",
+              "    const responseJson = pm.response.json();\r",
+              "    \r",
+              "    pm.expect(responseJson.user).to.have.all.keys('id', 'description', 'name', 'date');\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n \"email\": \"adminaa.doelar@example.com\", \r\n\r\n \"password\": \"password123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/auth/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "New Request",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Body matches string\", function () {\r",
+              "    pm.expect(pm.response.text()).to.include(\"Invalid token\");\r",
+              "});\r",
+              "pm.test(\"Status code is 201\", function () {\r",
+              "    pm.expect(pm.response.code).to.equal(201);\r",
+              "});\r",
+              "\r",
+              "const response = pm.response.json();\r",
+              "\r",
+              "// Validate response structure\r",
+              "pm.test(\"Response has required properties\", function () {\r",
+              "    pm.expect(response).to.have.all.keys('id', 'name', 'description', 'date', 'updatedAt', 'createdAt');\r",
+              "});\r",
+              "\r",
+              "// Validate data types\r",
+              "pm.test(\"Response properties have correct types\", function () {\r",
+              "    pm.expect(response.id).to.be.a('number');\r",
+              "    pm.expect(response.name).to.be.a('string');\r",
+              "    pm.expect(response.description).to.be.a('string');\r",
+              "    pm.expect(response.date).to.be.a('string');\r",
+              "    pm.expect(response.updatedAt).to.be.a('string');\r",
+              "    pm.expect(response.createdAt).to.be.a('string');\r",
+              "});\r",
+              "\r",
+              "// Validate content type\r",
+              "pm.test(\"Content-Type is application/json\", function () {\r",
+              "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.equal(\"application/json\");\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpc0FkbWluIjp0cnVlLCJpYXQiOjE3ODAzNTUxNDksImV4cCI6MTc4MDM1ODc0OX0.ivDQG3ElPjINQ4c9gH_3jMyVKOXD3a_z8BvU9gV7VTM",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n \"name\": \"Art Exhibition\",\r\n \"description\": \"An exhibition of contemporary art pieces.\",\r\n \"date\": \"2025-01-10\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/events",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "events"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "New Request",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpc0FkbWluIjp0cnVlLCJpYXQiOjE3ODAzNTA3MjIsImV4cCI6MTc4MDM1NDMyMn0.7EKXlX9hv107bazfEZWAHkKrdyGH1msQe0A023GcZcw",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "{{baseUrl}}/events/:eventId/rsvps",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "events",
+            ":eventId",
+            "rsvps"
+          ],
+          "variable": [
+            {
+              "key": "eventId",
+              "value": "3"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "New Request",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpc0FkbWluIjp0cnVlLCJpYXQiOjE3ODAzNTA3MjIsImV4cCI6MTc4MDM1NDMyMn0.7EKXlX9hv107bazfEZWAHkKrdyGH1msQe0A023GcZcw",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/events/:eventId/rsvps",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "events",
+            ":eventId",
+            "rsvps"
+          ],
+          "variable": [
+            {
+              "key": "eventId",
+              "value": "4"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "New Request",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpc0FkbWluIjp0cnVlLCJpYXQiOjE3ODAzNTA3MjIsImV4cCI6MTc4MDM1NDMyMn0.7EKXlX9hv107bazfEZWAHkKrdyGH1msQe0A023GcZcw",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/events/:eventId",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "events",
+            ":eventId"
+          ],
+          "variable": [
+            {
+              "key": "eventId",
+              "value": "4"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "New Request",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEzLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzgwMzUyODQzLCJleHAiOjE3ODAzNTY0NDN9.nawT7elW6bAI8hOzteUvwg7Pk5EPOk9GCq6VYjTeIbQ",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "{{baseUrl}}/users/profile",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "users",
+            "profile"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          "pm.test(\"Status code is 200\", function () {\r",
+          "    pm.response.to.have.status(200);\r",
+          "});\r",
+          "pm.test(\"Response time is less than 200ms\", function () {\r",
+          "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+          "});"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": ""
+    }
+  ]
+}

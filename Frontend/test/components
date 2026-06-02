@@ -1,0 +1,400 @@
+import { expect } from 'chai';
+import { Builder, By, until } from 'selenium-webdriver';
+
+  const loginPage_Logo = By.xpath('//h5[text()="Login"]');
+  const loginSubmit=By.xpath('//*[@type="submit"]');
+  const EmailText=By.css('input[type = "text"]');
+  const passwordText=By.css('input[type = "password"]');
+  const logOutButton=By.xpath('//*[@type="button" and text()="Logout"]');
+  const RSVPbutton=By.xpath('//button[text()="RSVP"]');
+  const postcards = By.xpath('//div[contains(@class, "MuiCard-root")]');
+  const cardRSVPED=By.xpath('//p[contains(text(), "You have RSVPed to this event.")]');
+  const registerButton=By.linkText('/register');
+  const registerLogo=By.xpath('//h5[text()="Register"]');
+  const registerUsername=By.css('input[id = "username"]');
+  const registerEmail=By.css('input[id = "email"]');
+  const registerPassword=By.css('input[id = "password"]');
+  const registerConfirm=By.css('input[id = "confirmPassword"]');
+  const registerSubmit=By.css('button[type = "submit"]');
+describe('EMS login unit tests', function() {
+  let driver;
+  const url = 'http://localhost:3000';
+
+
+ 
+  
+  before(async function() {
+    driver = await new Builder().forBrowser('chrome').build();
+  });
+
+  beforeEach(async function() {
+    await driver.get(url);
+    await driver.wait(until.elementLocated(loginPage_Logo), 5000);
+   
+  });
+
+  after(async function() {
+    await driver.quit();
+  });
+  
+  
+  it('should login successfull (happy scenario)', async function() {
+    const title = await driver.getTitle();
+    expect(title).to.equal('React App');
+    const loginLogo = await driver.findElement(loginPage_Logo);
+    const loginButton = await driver.findElement(loginSubmit);
+    const email= await driver.findElement(EmailText);
+    const password=await driver.findElement(passwordText);
+    await email.sendKeys('john.doe@example.com');
+    await password.sendKeys('password123');
+    await loginButton.click();  
+    const logoutbutton=await driver.findElement(logOutButton);
+    expect(logoutbutton.to.be.displayed);
+    const postcard=await driver.findElements(postcards);
+    expect(postcard.length).to.be.at.least(1);
+    });
+
+  it('should show "Invalid login credentials" warning entering wrong email  ', async function() {
+     const email= await driver.findElement(EmailText);
+      const password=await driver.findElement(passwordText);
+      const loginButton = await driver.findElement(loginSubmit);
+      await email.sendKeys('jo');
+      await password.sendKeys('password123');
+      await loginButton.click(); 
+      await driver.wait(until.alertIsPresent(), 10000);
+      let alert = await driver.switchTo().alert();
+      let alertText = await alert.getText();
+      expect(alertText).toBe("Invalid login credentials");
+      await alert.accept();
+      const logoutbutton=await driver.findElements(logOutButton);
+      expect(logoutbutton.not.to.be.displayed);
+      
+     });
+it('should show "Invalid login credentials" warning entering wrong password  ', async function() {
+     const email= await driver.findElement(EmailText);
+      const password=await driver.findElement(passwordText);
+      const loginButton = await driver.findElement(loginSubmit);
+      await email.sendKeys('john.doe@example.com');
+      await password.sendKeys('pas');
+      await loginButton.click(); 
+      await driver.wait(until.alertIsPresent(), 10000);
+      let alert = await driver.switchTo().alert();
+      let alertText = await alert.getText();
+      expect(alertText).toBe("Invalid login credentials");
+      await alert.accept();
+      const logoutbutton=await driver.findElements(logOutButton);
+      expect(logoutbutton.not.to.be.displayed);
+      
+     });
+
+
+describe('RSVP functionality', function() {
+  let driver;
+  const url = 'http://localhost:5000';
+
+  before(async function() {
+    driver = await new Builder().forBrowser('chrome').build();
+  });
+
+  beforeEach(async function() {
+    await driver.get(url);
+    await driver.wait(until.elementLocated(loginPage_Logo), 5000);
+    const login = await driver.findElement(loginSubmit);
+    const email= await driver.findElement(EmailText);
+    const password=await driver.findElement(passwordText);
+    await email.sendKeys('john.doe@example.com');
+    await password.sendKeys('password123');
+    await login.click();  
+   
+  });
+
+  after(async function() {
+    await driver.quit();
+  });
+
+  it("should test RSVP functionality",  async function() {
+   const postcard=await driver.findElements(postcards)
+    const firstCardRSVPbUTTON=await postcard[0].findElement(By.xpath(RSVP_button));
+    firstCardRSVPbUTTON.click(); 
+    const RSVP_Message = await postcard[0].findElement(By.xpath(cardRSVPED));
+    const RSVP_button=await driver.findElements(By.xpath(RSVPbutton));
+    expect(firstCardRSVPbUTTON.to.be.displayed);
+    expect(RSVP_Message.to.be.displayed);
+    
+    
+
+     });
+     //const Delete_button = await postcard[0].findElement(By.xpath('//button[text()="Delete"]'));
+});
+
+describe('Register tests', function() {
+  let driver;
+  const url = 'http://localhost:5000';
+
+  before(async function() {
+    driver = await new Builder().forBrowser('chrome').build();
+  });
+
+  beforeEach(async function() {
+    await driver.get(url);
+    await driver.wait(until.elementLocated(registerButton), 5000);
+    const Register=await driver.findElement(registerButton);
+    await Register.click() ;
+    await driver.wait(until.elementLocated(registerLogo), 5000);
+  
+   
+  });
+
+  after(async function() {
+    await driver.quit();
+  });
+  it("should Register Successfully",async function(){
+    const Username= await driver.findElement(registerUsername);
+    const email= await driver.findElement(registerEmail);
+    const password=await driver.findElement(registerPassword);
+    const confirm_password=await driver.findElement(registerConfirm);
+    await Username.sendKeys('john_johnes2');
+    await email.sendKeys('john.doe234@example.com2');
+    await password.sendKeys('characters1234');
+    await confirm_password.sendKeys('characters1234');
+    const registSubmit=await driver.findElement(registerSubmit);
+    await registSubmit.click;
+    await driver.wait(until.elementLocated(loginPage_Logo), 5000);
+    login_page= await driver.findElement(loginPage_Logo);
+    await login_page.to.be.displayed;
+  });
+
+  it("should show 'Passwords don't match!' message",async function(){
+    const Username= await driver.findElement(registerUsername);
+    const password=await driver.findElement(registerPassword);
+    const confirm_password=await driver.findElement(registerConfirm); 
+    await Username.sendKeys('john_johnes2');
+    await password.sendKeys('characters1234');
+    await confirm_password.sendKeys('characters12345');
+    await registerSubmit.click;
+    let errorElement = await driver.wait(until.elementLocated(By.css('[class=error-banner]')), 5000);
+    let errorText = await errorElement.getText();
+    expect(errorText).to.equal("Passwords don't match!");
+});
+it("should disallow registering with same email twice",async function(){
+    const Username= await driver.findElement(registerUsername);
+    const email= await driver.findElement(registerEmail);
+    const password=await driver.findElement(registerPassword);
+    const confirm_password=await driver.findElement(registerConfirm);
+    await Username.sendKeys('john_johnes');
+    await email.sendKeys('john.doe234@example.com');
+    await password.sendKeys('characters1234');
+    await confirm_password.sendKeys('characters1234');
+    let errorElement = await driver.wait(until.elementLocated(By.css('[class=error-banner]')), 5000);
+    let errorText = await errorElement.getText();
+    expect(errorText).to.equal("Registration failed.");
+    
+});
+it("should display error message if register username less than 2 characters",async function(){
+
+    const Username= await driver.findElement(registerUsername);
+    const email= await driver.findElement(registerEmail);
+    const password=await driver.findElement(registerPassword);
+    const confirm_password=await driver.findElement(registerConfirm);
+    await Username.sendKeys('a');
+    await email.sendKeys('john.john@example.com');
+    await password.sendKeys('password123');
+    await confirm_password.sendKeys('password123');
+    let errorElement = await driver.wait(until.elementLocated(By.className('error-banner')), 5000);
+    let errorText = await errorElement.getText();
+    expect(errorText).to.equal("Username field must be at least 3 characters");
+
+  });
+  it("should display error message if register password less than 8 characters",async function(){
+
+    const Username= await driver.findElement(registerUsername);
+    const email= await driver.findElement(registerEmail);
+    const password=await driver.findElement(registerPassword);
+    const confirm_password=await driver.findElement(registerConfirm);
+    await Username.sendKeys('johnes_johnes');
+    await email.sendKeys('john.doe334@example.com');
+    await password.sendKeys('pas123');
+    await confirm_password.sendKeys('pas123');
+    let errorElement = await driver.wait(until.elementLocated(By.className('error-banner')), 5000);
+    let errorText = await errorElement.getText();
+    expect(errorText).to.equal("Password must be at least 8 characters long!");
+
+  });
+    it("should display error message if register password less than 3 numbers",async function(){
+
+    const Username= await driver.findElement(registerUsername);
+    const email= await driver.findElement(registerEmail);
+    const password=await driver.findElement(registerPassword);
+    const confirm_password=await driver.findElement(registerConfirm);
+    await Username.sendKeys('johnes._johnes');
+    await email.sendKeys('john.doe3345@example.com');
+    await password.sendKeys('password12');
+    await confirm_password.sendKeys('password12');
+    let errorElement = await driver.wait(until.elementLocated(By.className('error-banner')), 5000);
+    let errorText = await errorElement.getText();
+    expect(errorText).to.equal("Password must have at least 3 numbers");
+
+  });
+   it("should display error message when leaving email empty",async function(){
+
+    const Username= await driver.findElement(registerUsername);
+    const email= await driver.findElement(registerEmail);
+    const password=await driver.findElement(registerPassword);
+    const confirm_password=await driver.findElement(registerConfirm);
+    await Username.sendKeys('johnes._johnes');
+    
+    await password.sendKeys('password12');
+    await confirm_password.sendKeys('password12');
+    let errorElement = await driver.wait(until.elementLocated(By.className('error-banner')), 5000);
+    let errorText = await errorElement.getText();
+    expect(errorText).to.equal("Registration failed.");
+
+  });
+
+  });
+
+  describe('admin functionality test', function() {
+  let driver;
+  const url = 'http://localhost:5000';
+  const dashBoard = By.css('[href="/dashboard"]');
+  const logo = By.css('//h4[text()="Create New Event"]');
+  const name =By.css ('input[name="name"]');
+  const desctiption=By.css ('textarea[name="description"]');
+  const date=By.css ('input[name="date"]');
+  const time=By.css ('input[name="time"]');
+  const location =By.css ('input[name="location"]');
+  const submit=By.css('button[type="submit"]');
+
+  before(async function() {
+    driver = await new Builder().forBrowser('chrome').build();
+    await driver.get(url);
+   await driver.wait(until.elementLocated(loginPage_Logo));
+   const Email= await driver.findElement(EmailText);
+   const password= await driver.findElement(passwordText);
+   await email.sendKeys('adminaa.doelar@example.com');
+   await password.sendKeys('password123');
+   await login.click();  
+  });
+
+  beforeEach(async function() {
+    
+  });
+
+  after(async function() {
+    await driver.quit();
+  });
+
+
+
+
+//user functionality
+it("validate card message when RSVP button clicked",async function(){
+ const RSVP_Message = await driver.findElement(firstCardRSVPED);
+ const RSVP_button = await driver.findElement(RSVPbutton);
+
+});
+//'//div[contains(@class, "MuiCard-root")][.//h6[text()="giza event"]]//h6[2]'
+it("validate date of Event",async function(){
+const dateText = await driver.findElements(By.xpath('//div[contains(@class, "MuiCard-root")]//h6[2]'));
+//  Convert strings to Date objects
+
+const cutoffDate = new Date('2025-12-31');
+const futureDate = new Date('2030-12-31');
+for(let i =0;i<dateText.length;i++){
+const date =await dateText[i].getText();
+const actualDate = new Date(date);
+expect(actualDate.getTime()).toBeGreaterThan(cutoffDate.getTime());
+expect(actualDate.getTime()).toBeLessThan(futureDate.getTime);
+}
+});
+
+
+
+
+//admin functionality
+  it("should successfuly delete event",async function(){
+    const postcard = await driver.findElements(postcards); 
+    expect(postcard.length).to.be.at.least(1);
+    const Delete_button = await postcard[0].findElement(By.xpath('//button[text()="Delete"]'));
+   
+    await Delete_button.click();
+    expect(postcard[0].not.to.be.displayed);
+
+  });
+
+
+it("create new event with old date",async function(){
+  const Dashboard =  await driver.findElement(dashBoard);
+  await Dashboard.click();
+  await driver.wait(until.elementLocated(logo), 5000));
+  const Event_Name = await driver.findElement(name);
+  await Event_Name.sendKeys('giza event');
+  const Description = await driver.findElement(desctiption);
+  await Description.sendKeys('event located at giza pyramids first of october');
+  const Date = await driver.findElement(date);
+  await Date.sendKeys('681998');
+  const Time = await driver.findElement(time);
+  await Time.sendKeys('117p');
+  const Location = await driver.findElement(location);
+  await Location.sendKeys('end of haram 22 street 4th block');
+  const submitButton =  await driver.findElement(submit);
+  await submitButton.click();
+  const postcard = await driver.findElements(postcards);
+  expect(postcard[0].not.to.be.displayed);
+  }); 
+
+
+
+
+it("create new event with very far date ",async function(){
+  const Dashboard =  await driver.findElement(dashBoard);
+  await Dashboard.click();
+  await driver.wait(until.elementLocated(logo), 5000);
+  const Event_Name = await driver.findElement(name);
+  await Event_Name.sendKeys('giza event');
+  const Description = await driver.findElement(desctiption);
+  await Description.sendKeys('event located at giza pyramids first of october');
+  const Date = await driver.findElement(date);
+  await Date.sendKeys('686060');
+  const Time = await driver.findElement(time);
+  await Time.sendKeys('117p');
+  const Location = await driver.findElement(location);
+  await Location.sendKeys('end of haram 22 street 4th block');
+  const title =  await driver.findElement(submit);
+  await title.click();
+  const postcard = await driver.findElements(postcards);
+  expect(postcard[0].not.to.be.displayed);
+  }); 
+
+it("create new event with same name",async function(){
+  const Dashboard =  await driver.findElement(dashBoard);
+  await Dashboard.click();
+  await driver.wait(until.elementLocated(logo), 5000);
+  const Event_Name = await driver.findElement(name);
+  await Event_Name.sendKeys('giza event');
+  const Description = await driver.findElement(desctiption);
+  await Description.sendKeys('event located at giza pyramids first of october');
+  const Date = await driver.findElement(date);
+  await Date.sendKeys('681998');
+  const Time = await driver.findElement(time);
+  await Time.sendKeys('117p');
+  const Location = await driver.findElement(loaction);
+  await Location.sendKeys('end of haram 22 street 4th block');
+  const submitButton =  await driver.findElement(submit);
+  await submitButton.click();
+  const postcard = await driver.findElements(postcards);
+  expect(postcard[0].not.to.be.displayed);
+  }); 
+
+  });
+    it("should successfuly delete event",async function(){
+    const postcard = await driver.findElements(postcards); 
+    expect(postcard.length).to.be.at.least(1);
+    const Delete_button = await postcard[0].findElement(By.xpath('//button[text()="Delete"]'));
+   
+    await Delete_button.click();
+    expect(postcard[0].not.to.be.displayed);
+
+  });
+
+});

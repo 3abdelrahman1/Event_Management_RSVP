@@ -14,7 +14,7 @@ describe('Register tests', function() {
   const url = 'http://localhost:3000';
 
   before(async function() {
-  //  driver = await new Builder().forBrowser('chrome').build();
+    driver = await new Builder().forBrowser('chrome').build();
   });
 
   beforeEach(async function() {

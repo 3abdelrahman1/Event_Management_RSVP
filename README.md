@@ -55,5 +55,13 @@ Project Setup:
   The frontend will run on http://localhost:3000.
 
 
-3. SQL Queries
+3. Running Tests
+- Ensure both the Backend and Frontend are running.
+- Open a new terminal window.
+- Execute the following command to run the test suite:
+  npm test
+*Note: After running `npm test`, you can view a detailed visual report by opening the `mochawesome-report/index.html` file in your browser.*
+
+
+4. SQL Queries
 - Run the SQL commands from eventmanagementsystem.sql to show and select from tables, as well as insert default users and events.

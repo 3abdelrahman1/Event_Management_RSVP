@@ -14,7 +14,7 @@ describe('RSVP functionality', function() {
   const url = 'http://localhost:3000';
 
     before(async function() {
-    //  driver = await new Builder().forBrowser('chrome').build();
+      driver = await new Builder().forBrowser('chrome').build();
       await driver.get(url);
       await driver.wait(until.elementLocated(loginPage_Logo), 5000);
       const login = await driver.findElement(loginSubmit);

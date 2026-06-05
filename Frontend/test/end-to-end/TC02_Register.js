@@ -14,13 +14,14 @@ describe('Register tests', function() {
   const url = 'http://localhost:3000';
 
   before(async function() {
-  //  driver = await new Builder().forBrowser('chrome').build();
+    driver = await new Builder().forBrowser('chrome').build();
   });
 
   beforeEach(async function() {
     await driver.get(url);
     await driver.wait(until.elementLocated(registerButton), 5000);
     const Register=await driver.findElement(registerButton);
+     await driver.wait(until.elementLocated(Register), 5000);
     await Register.click() ;
     await driver.wait(until.elementLocated(registerLogo), 5000);
   
@@ -31,14 +32,20 @@ describe('Register tests', function() {
     await driver.quit();
   });
   it("should Register Successfully",async function(){
+     driver.wait(until.elementLocated(registerUsername),5000);
     const Username= await driver.findElement(registerUsername);
     const email= await driver.findElement(registerEmail);
     const password=await driver.findElement(registerPassword);
     const confirm_password=await driver.findElement(registerConfirm);
+    driver.wait(until.elementLocated(Username),5000);
     await Username.sendKeys('john_johnes2');
+    driver.wait(until.elementLocated(email),5000);
     await email.sendKeys('john.doe234@example.com2');
+     driver.wait(until.elementLocated(password),5000);
     await password.sendKeys('characters1234');
+    driver.wait(until.elementLocated(confirm_password),5000);
     await confirm_password.sendKeys('characters1234');
+    driver.wait(until.elementLocated(registerSubmit),5000);
     const registSubmit=await driver.findElement(registerSubmit);
     await registSubmit.click();
     await driver.wait(until.elementLocated(loginPage_Logo), 5000);
@@ -48,12 +55,16 @@ describe('Register tests', function() {
   });
 
   it("should show 'Passwords don't match!' message",async function(){
+    driver.wait(until.elementLocated(registerUsername),5000);
     const Username= await driver.findElement(registerUsername);
     const password=await driver.findElement(registerPassword);
     const confirm_password=await driver.findElement(registerConfirm); 
+    driver.wait(until.elementLocated(Username),5000);
     await Username.sendKeys('john_johnes2');
+    driver.wait(until.elementLocated(password),5000);
     await password.sendKeys('characters1234');
     await confirm_password.sendKeys('characters12345');
+    driver.wait(until.elementLocated(registerSubmit),5000);
     await registerSubmit.click();
     let errorElement = await driver.wait(until.elementLocated(By.css('[class=error-banner]')), 5000);
     let errorText = await errorElement.getText();

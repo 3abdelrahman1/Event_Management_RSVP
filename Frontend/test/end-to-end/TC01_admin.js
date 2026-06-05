@@ -90,8 +90,9 @@ it("create new event with very far date ",async function(){
   const submitButton=  await driver.findElement(submit);
   await submit.click();
    await driver.wait(until.elementLocated(postcards), 5000);
-  const postcard = await driver.findElements(postcards);
-  const postcardIsDisplayed= await postcard[0].isDisplayed();
+  await driver.sleep(1000); 
+const postcardList = await driver.findElements(postcards);
+const postcardIsDisplayed= await postcard[0].isDisplayed();
   expect(postcardIsDisplayed).to.be.false;
   }); 
 

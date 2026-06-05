@@ -14,14 +14,14 @@ describe('RSVP functionality', function() {
   const url = 'http://localhost:3000';
 
     before(async function() {
-    //  driver = await new Builder().forBrowser('chrome').build();
+      driver = await new Builder().forBrowser('chrome').build();
       await driver.get(url);
       await driver.wait(until.elementLocated(loginPage_Logo), 5000);
       const login = await driver.findElement(loginSubmit);
       const email= await driver.findElement(EmailText);
       const password=await driver.findElement(passwordText);
-      await email.sendKeys('john.doe@example.com');
-      await password.sendKeys('password123');
+      await email.sendKeys('john.doe234@example.com');
+      await password.sendKeys('characters1234');
       await login.click();  
      await driver.wait(until.elementLocated(postcards), 5000);
     });

@@ -13,7 +13,7 @@ import { Builder, By, until } from 'selenium-webdriver';
   let driver;
   const url = 'http://localhost:3000';
  before(async function() {
-   // driver = await new Builder().forBrowser('chrome').build();
+    driver = await new Builder().forBrowser('chrome').build();
   });
 
   beforeEach(async function() {
@@ -36,7 +36,7 @@ import { Builder, By, until } from 'selenium-webdriver';
     await email.sendKeys('john.doe@example.com');
     await password.sendKeys('password123');
     await loginButton.click();  
-    driver.wait(until.elementLocated(logOutButton));
+    driver.wait(until.elementLocated(logOutButton),5000);
     const logoutbutton=await driver.findElement(logOutButton);
     const logOutButtonDisplay= await logOutButton.isDisplayed();
     expect(logOutButtonDisplay).to.be.true;

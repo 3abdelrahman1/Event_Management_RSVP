@@ -13,7 +13,7 @@ import { Builder, By, until } from 'selenium-webdriver';
   let driver;
   const url = 'http://localhost:3000';
  before(async function() {
-   // driver = await new Builder().forBrowser('chrome').build();
+    driver = await new Builder().forBrowser('chrome').build();
   });
 
   beforeEach(async function() {

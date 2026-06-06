@@ -63,9 +63,8 @@ it("create new event with old date",async function(){
   await submitButton.click();
    await driver.wait(until.elementLocated(postcards), 5000);
   const postcard = await driver.findElements(postcards);
-   const postcardIsDisplayed = await postcard[0].isDisplayed();
-     
-      expect(postcardIsDisplayed).to.be.false;
+  const postcardList = await driver.findElements(postcards);
+expect(postcardList.length).to.equal(0, "Expected no postcards to be created, but found some.");
   }); 
 
 

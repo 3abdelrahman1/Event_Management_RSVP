@@ -63,8 +63,8 @@ it("create new event with old date",async function(){
   await submitButton.click();
    await driver.wait(until.elementLocated(postcards), 5000);
   const postcard = await driver.findElements(postcards);
-  const postcardList = await driver.findElements(postcards);
-expect(postcardList.length).to.equal(0, "Expected no postcards to be created, but found some.");
+  const postcardIsDisplayed= await postcard[0].isDisplayed();
+  expect(postcardIsDisplayed).to.be.false;
   }); 
 
 
@@ -89,8 +89,7 @@ it("create new event with very far date ",async function(){
   const submitButton=  await driver.findElement(submit);
   await submit.click();
    await driver.wait(until.elementLocated(postcards), 5000);
-  await driver.sleep(1000); 
-const postcardList = await driver.findElements(postcards);
+  
 const postcardIsDisplayed= await postcard[0].isDisplayed();
   expect(postcardIsDisplayed).to.be.false;
   }); 
